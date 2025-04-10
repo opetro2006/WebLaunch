@@ -1,0 +1,31 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs: 
+  validate-html:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate HTML
+        uses:Cyb3r-Jak3/HTML5-Validator-Action@v1
+        with:
+          files: 'index.html'
+
+deploy:
+  needs: validate-html
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configurar Github Pages
+      uses: peaceiris/actions-gh-pages@v3
+      
+    - name: Publicar en Github Pages
+      uses: actions/upload-pages-artifact@v2
